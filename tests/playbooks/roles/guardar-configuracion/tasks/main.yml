@@ -1,0 +1,11 @@
+############################################################################
+#               ROL DE GUARDAR LA CONFIGURACION DEL EQUIPO                 # 
+#                !!!PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                   # 
+############################################################################
+
+# # # EJECUTANDO EL COMANDO SOLICITADO # # #
+- name: Ejecutando el comando "wr"
+  ios_command:
+    commands:
+      - wr          
+  

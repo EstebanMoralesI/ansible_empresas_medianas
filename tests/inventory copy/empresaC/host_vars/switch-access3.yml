@@ -1,0 +1,38 @@
+---
+#######################
+# PARAMETROS GLOBALES #
+#######################
+
+######### 
+# VLANS #
+#########
+
+vlans_parametros:
+  - vlan_id: 10
+    vlan_name: Redes
+  - vlan_id: 20
+    vlan_name: Financiero
+  - vlan_id: 30
+    vlan_name: Marketing
+  - vlan_id: 40
+    vlan_name: Comercial
+  - vlan_id: 50
+    vlan_name: Gestion
+  - vlan_id: 60
+    vlan_name: Operaciones
+
+#######################
+# MODO TRUNK Y ACCESS #
+#######################
+
+# # # MODO TRUNK # # #
+trunk_parametros:
+  - trunk_puerto: g1/2
+  - trunk_puerto: g2/2
+
+# # MODO ACCESS # # #
+access_parametros:
+  - access_puerto: g3/0
+    access_vlan: 50
+  - access_puerto: g3/1
+    access_vlan: 60

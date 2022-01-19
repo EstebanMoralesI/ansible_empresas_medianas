@@ -1,0 +1,51 @@
+---
+###################################
+# PARAMETROS GENERALES DE ENTORNO #
+###################################
+
+##!!!############################################!!!##
+# !!!PRECAUCIÓN!!! NO MODIFICAR ESTOS PARAMETROS !!! #
+##!!!############################################!!!##
+ansible_connection: network_cli
+ansible_network_os: ios
+ansible_become: yes
+ansible_become_method: enable
+
+##################################
+# PARAMETROS QUE SE DEBEN LLENAR #
+##################################
+
+nombre_empresa: empresaB
+ansible_user: esteban
+ansible_password: cisco
+# # # empresa-b-backup # # #
+gitlab_project_id: 32027565
+gitlab_access_token: glpat-R6vWoLKRt4LEM-tgPPpY
+
+######################################
+# PARAMETROS DE USUARIOS Y PASSWORDS #
+######################################
+
+users:
+  - username: user1
+    password: password-user1
+
+  - username: user2
+    password: password-user2
+
+  - username: user3
+    password: password-user3
+
+############################################################################
+# PARAMETROS DE TODOS LOS EQUIPOS CON SUS RESPECTIVAS IP'S (CONECCION SSH) #
+############################################################################
+
+ips:
+  - ips_name: r1
+    ips_id: 192.168.122.81
+  - ips_name: sw1
+    ips_id: 192.168.122.83
+  - ips_name: sw2
+    ips_id: 192.168.122.84
+  - ips_name: sw3
+    ips_id: 192.168.122.85

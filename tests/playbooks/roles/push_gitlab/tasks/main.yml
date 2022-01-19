@@ -1,0 +1,28 @@
+############################################################################
+#                          ROL DE PUSH A GITLAB                            # 
+#                !!!PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                   # 
+############################################################################
+
+# # # CREANDO EL ACTION LIST CUANDO LOS ITEMS ESTEN VACIOS # # #
+- name: Creando action list
+  set_fact:
+    action_list: "{{ action_list | default([]) + [ hostvars[item].action_dict ] }}"
+  loop: "{{ groups['all'] }}"
+  when: hostvars[item].action_dict != {}
+
+# # # PUSH A GITLAB CUANDO EL ACTION LIST ESTE DEFINIDO # # #
+- name: Push nuevo/actualizado a gitlab
+  uri:
+    url: https://gitlab.com/api/v4/projects/{{ gitlab_project_id }}/repository/commits
+    headers:
+      Private-Token: "{{ gitlab_access_token }}"
+    validate_certs: no
+    method: POST
+    body:
+      branch: master
+      commit_message: backup general 
+      actions: "{{ action_list }}"
+    status_code: 201
+    body_format: json
+  delegate_to: localhost
+  when: action_list is defined

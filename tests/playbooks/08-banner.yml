@@ -1,0 +1,21 @@
+---
+############################################################################
+#   CONFIGURACION DEL BANNER MOTD EN EQUIPOS DE ACUERDO A PARAMETROS EN    # 
+#   INVENTORY           !!!PRECAUCIÓN!!! NO MODIFICAR EL CODIGO            # 
+############################################################################
+
+- name: Configuración del login del banner
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Remover antiguo banner
+      ios_banner:
+        banner: motd
+        state: absent
+
+    - name: Configurando el banner desde un archivo
+      ios_banner:
+        banner: motd
+        text: "{{ lookup('file', './parametros/banner.cfg') }}"
+        state: present  

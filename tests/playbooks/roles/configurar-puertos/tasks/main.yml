@@ -1,0 +1,20 @@
+############################################################################
+#  ROL DE CONFIGURACION DE PUERTOS EN EQUIPOS DE ACUERDO A PARAMETROS EN   # 
+#  INVENTORY              !!!PRECAUCIÓN!!! NO MODIFICAR EL CODIGO          # 
+############################################################################
+
+# # # CONFIGURACION DE PUERTOS # # #
+- name: Configurar PUERTOS
+  ios_config:
+    lines:
+      - interface {{ item.puerto_id }}          
+      - ip address {{ item.puerto_ip }} {{ item.puerto_mascara }} 
+      - no shutdown      
+  loop: "{{ puertos_parametros }}"
+
+# # # LLAMADO A ROL VISUALIZACION DE RESULTADOS # # #
+- name: Ejecutando el comando "show ip interface brief"
+  include_role:
+    name: visualizar
+  vars: 
+    comando_visualizar: "show ip interface brief"
