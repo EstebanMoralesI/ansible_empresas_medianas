@@ -1,0 +1,15 @@
+---
+############################################################################
+#          CONSULTA DE USUARIOS A TODOS LOS EQUIPOS DEL INVENTORY          #
+#                    PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                  #
+############################################################################
+
+- name: Ejecutando el comando "show run | include username" 
+  hosts: all
+  gather_facts: no
+  tasks:
+    # # # LLAMADO A ROL VISUALIZAR # # #
+    - include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show run | include username"

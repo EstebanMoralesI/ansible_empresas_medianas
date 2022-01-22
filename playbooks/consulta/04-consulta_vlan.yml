@@ -1,0 +1,22 @@
+---
+############################################################################
+#            CONSULTA DE VLAN A TODOS LOS EQUIPOS DEL INVENTORY            #
+#                    PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                  #
+############################################################################
+
+- name: Comandos Show para VLAN y TRUNK 
+  hosts: equipos-vlan
+  gather_facts: no
+  tasks:
+    - name: Ejecutando el comando "show vlan brief"
+      # # # LLAMADO A ROL VISUALIZAR # # #
+      include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show vlan brief"
+    - name: Ejecutando el comando "show interfaces trunk"
+      # # # LLAMADO A ROL VISUALIZAR # # #
+      include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show interfaces trunk"

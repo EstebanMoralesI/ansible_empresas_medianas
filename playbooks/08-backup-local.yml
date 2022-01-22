@@ -1,0 +1,101 @@
+---
+############################################################################
+#         BACKUP GENERAL LOCAL DE EQUIPOS EN CARPETA REPOSITORIOS          # 
+#                   PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                   # 
+############################################################################
+
+- name: Directorios de Repositorios 
+  hosts: localhost 
+  gather_facts: no
+  tasks:
+    
+    # # # CREACIÓN DEL REPOSITORIO # # #
+
+    # CREACIÓN DEL DIRECTORIO "backup-show-_arp" # 
+    - name: Creando la carpeta "backup-show_arp"
+      include_role:
+        name: crear_repositorios
+      vars: 
+        repositorio_nombre_carpeta: backup-show_arp
+  
+    # CREACIÓN DEL DIRECTORIO "backup-show-ip_int_br" #
+    - name: Creando la carpeta "backup-show_ip_int_br"
+      include_role:
+        name: crear_repositorios
+      vars: 
+        repositorio_nombre_carpeta: backup-show_ip_int_br
+
+    # CREACIÓN DEL DIRECTORIO "backup-show-run" #
+    - name: Creando la carpeta "backup-show_run"
+      include_role:
+        name: crear_repositorios
+      vars: 
+        repositorio_nombre_carpeta: backup-show_run
+  
+      # CREACIÓN DEL DIRECTORIO "cfg" #
+    - name: Creando la carpeta "cfg"
+      include_role:
+        name: crear_repositorios
+      vars: 
+        repositorio_nombre_carpeta: cfg
+
+    # CREACIÓN DEL DIRECTORIO "detalle-de-equipos" # 
+    - name: Creando la carpeta "detalle-de-equipos"
+      include_role:
+        name: crear_repositorios
+      vars: 
+        repositorio_nombre_carpeta: detalle-de-equipos
+
+- name: Backup Local
+  hosts: all 
+  gather_facts: no
+  tasks:
+  
+    # # # GENERACIÓN DE BACKUPS EN DIRECTORIOS # # #
+
+    # BACKUP "show arp" #
+    - name: Generando archivos SHOW ARP
+      include_role:
+        name: backups 
+      vars:
+        comando_backup: "show arp" 
+        backup_nombre_archivo: "arp" 
+        backup_nombre_carpeta: backup-show_arp           
+
+    # BACKUP "show ip interface brief" #
+    - name: Generando archivos SHOW IP INTERFACE BRIEF 
+      include_role:
+        name: backups 
+      vars:
+        comando_backup: "show ip interface brief" 
+        backup_nombre_archivo: "ip_int_br" 
+        backup_nombre_carpeta: backup-show_ip_int_br     
+  
+    # BACKUP "show run" #
+    - name: Generando archivos SHOW RUN 
+      include_role:
+        name: backups 
+      vars:
+        comando_backup: "show run" 
+        backup_nombre_archivo: "run" 
+        backup_nombre_carpeta: backup-show_run 
+
+    # BACKUP DE EQUIPOS "cfg" #
+    - name: Generando archivos ".CFG"
+      ios_command:
+        commands:
+          - show run 
+      register: output    
+    - name: Grabar la configuracion de los equipos de red
+      copy:        
+        content: "{{ output.stdout[0] }}"
+        dest: ./playbooks/repositorio/{{ nombre_empresa }}/cfg/{{ inventory_hostname }}.cfg
+
+    # BACKUP "detalle de equipos" #
+    - name: Obteniendo los parametros de los equipos de red "DETALLE DE EQUIPOS"
+      ios_facts:
+        gather_subset: all  
+    - name: Grabando los parametros de los equipos de red "DETALLE DE EQUIPOS"
+      template:
+        src: ./template/detalle-de-equipos.j2
+        dest: ./playbooks/repositorio/{{ nombre_empresa }}/detalle-de-equipos/detalle-de-equipos.csv

@@ -1,0 +1,24 @@
+---
+############################################################################
+#            CONSULTA DE HSRP A TODOS LOS EQUIPOS DEL INVENTORY            #
+#                    PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                  #
+############################################################################
+
+- name: Ejecutando el comando "show standby"  
+  hosts: 
+    - equipo-hsrp-activo-switch
+    - equipos-hsrp-standby-switch
+    - equipo-hsrp-activo-router
+    - equipos-hsrp-standby-router
+  gather_facts: no
+  tasks:
+    # # # LLAMADO A ROL VISUALIZAR # # #
+    - include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show standby"
+    # # # LLAMADO A ROL VISUALIZAR # # #
+    - include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show standby brief"

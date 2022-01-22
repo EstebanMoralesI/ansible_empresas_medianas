@@ -1,0 +1,27 @@
+---
+- name: Configuracion de puertos 
+  include: 01-configurar-puertos.yml
+
+- name: Configuracion de Etherchannel 
+  include: 02-etherchannel.yml
+
+- name: Configuracion de OSPF
+  include: 03-ospf.yml
+
+- name: Configuracion de Vlans 
+  include: 04-vlans.yml
+
+- name: Configuracion de HSRP 
+  include: 05-hsrp.yml
+
+- name: Configuracion de Usuarios
+  include: 06-usuarios.yml
+
+- name: Configuracion de Banner Motd 
+  include: 07-banner.yml
+
+- name: Back-Up Local 
+  include: 08-backup-local.yml
+
+- name: Back-Up Git-Lab
+  include: 09-backup-gitlab.yml

@@ -1,0 +1,15 @@
+---
+############################################################################
+#        CONSULTA DE ETHERCHANNEL A TODOS LOS EQUIPOS DEL INVENTORY        #
+#                    PRECAUCIÓN!!! NO MODIFICAR EL CODIGO                  #
+############################################################################
+
+- name: Ejecutando el comando "show etherchannel summary"
+  hosts: equipos-etherchannel-capa3, equipos-etherchannel-capa2
+  gather_facts: no
+  tasks:
+    # # # LLAMADO A ROL VISUALIZAR # # #
+    - include_role:
+        name: visualizar
+      vars: 
+        comando_visualizar: "show etherchannel summary"

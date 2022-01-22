@@ -1,0 +1,45 @@
+---
+############################################################################
+#          RESETEO DE HSRP EN EQUIPOS DE ACUERDO A PARAMETROS EN           # 
+#          INVENTORY     !!!PRECAUCIÓN!!! NO MODIFICAR EL CODIGO           # 
+############################################################################
+
+- name:  RESETEO SWITCH HSRP ACTIVO
+  hosts: equipo-hsrp-activo-switch
+  gather_facts: no
+  tasks: 
+    - ios_config:
+        lines:
+          - interface vlan {{ item.hsrp_vlan }}
+          - no standby {{ item.hsrp_numero }} 
+      loop: "{{ hsrp_switch_activo }}"
+
+- name: RESETEO SWITCH HSRP STANDBY
+  hosts: equipos-hsrp-standby-switch
+  gather_facts: no
+  tasks:
+    - ios_config:
+        lines:
+          - interface vlan {{ item.hsrp_vlan }}
+          - no standby {{ item.hsrp_numero }}    
+      loop: "{{ hsrp_switch_standby }}"
+        
+- name: RESETEO ROUTER HSRP ACTIVO
+  hosts: equipo-hsrp-activo-router
+  gather_facts: no
+  tasks:
+    - ios_config:
+        lines:
+          - interface {{ item.hsrp_puerto }}.{{ item.hsrp_numero_vlan }} 
+          - no standby {{ item.hsrp_numero}}        
+      loop: "{{ hsrp_router_activo }}"
+
+- name: RESETEO ROUTER HSRP STANDBY
+  hosts: equipos-hsrp-standby-router
+  gather_facts: no
+  tasks:
+    - ios_config:
+        lines:
+          - interface {{ item.hsrp_puerto }}.{{ item.hsrp_numero_vlan }} 
+          - no standby {{ item.hsrp_numero}}       
+      loop: "{{ hsrp_router_standby }}"
